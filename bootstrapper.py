@@ -18,7 +18,7 @@ def CDS_bootstrap(cds_spreads, yield_curve, cds_tenor, yield_tenor, prem_per_yea
 
     # Checks
     assert len(cds_spreads) == len(cds_tenor), "CDS spread and it's tenor array must be the same."
-    assert len(yield_curve) == len(yield_tenor), "Bond yield curbe and it's tenor must be the same."
+    assert len(yield_curve) == len(yield_tenor), "Bond yield curve and it's tenor must be the same."
     
     # Interpolation/Extrapolation function  
     interp = polate.interp1d(yield_tenor, yield_curve,'linear', fill_value='extrapolate')
@@ -88,13 +88,9 @@ def CDS_spread(credit_curve, yield_curve, credit_curve_tenor, yield_tenor, prem_
         maturity :      desired CDS maturity
     '''
     # Checks
-    if len(yield_curve) != len(yield_tenor):
-        print('Yield curve does not match the yield tenor')
-        return None
-    
-    if len(credit_curve) != len(credit_curve_tenor):
-        print('Credit curve does not match the credit curve tenor')
-        return None            
+
+    assert len(yield_curve) == len(yield_tenor), "Bond yield curve and it's tenor must be the same."
+    assert len(credit_curve) == len(credit_curve_tenor), "Credit curve and it's tenor array must be the same."      
     
     # I. Get survival probabilities and default probabilities using hazard rate curve
     a = 1/prem_per_year
@@ -149,13 +145,8 @@ def binary_CDS_spread(credit_curve, yield_curve, credit_curve_tenor, yield_tenor
         maturity :      desired CDS maturity
     '''
     # Checks
-    if len(yield_curve) != len(yield_tenor):    
-        print('Yield curve does not match the yield tenor')
-        return None
-    
-    if len(credit_curve) != len(credit_curve_tenor):
-        print('Credit curve does not match the credit curve tenor')
-        return None      
+    assert len(yield_curve) == len(yield_tenor), "Bond yield curve and it's tenor must be the same."
+    assert len(credit_curve) == len(credit_curve_tenor), "Credit curve and it's tenor array must be the same."  
     
     # I. Get survival probabilities and default probabilities using hazard rate curve
     a = 1/prem_per_year
